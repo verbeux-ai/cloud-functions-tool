@@ -12,7 +12,7 @@ func NewContext(w http.ResponseWriter, r *http.Request) Context {
 	return &requestContext{w, r, 0, make(http.Header)}
 }
 
-func (s *requestContext) JSON(data interface{}) error {
+func (s *requestContext) JSON(data interface{}) {
 	s.w.Header().Set("Content-Type", "application/json")
 	if s.status == 0 {
 		s.w.WriteHeader(http.StatusOK)
@@ -22,11 +22,9 @@ func (s *requestContext) JSON(data interface{}) error {
 	if err != nil {
 		zap.L().Error("failed to encode json to writer", zap.Error(err))
 		if _, err = s.w.Write([]byte(`{"message": "fatal", "error": "fatal"}`)); err != nil {
-			zap.L().Error("failed to return response", zap.Error(err))
+			zap.L().Panic("failed to return response", zap.Error(err))
 		}
 	}
-
-	return err
 }
 
 func (s *requestContext) Headers(m http.Header) Context {
