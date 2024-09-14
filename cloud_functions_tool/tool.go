@@ -27,6 +27,10 @@ func (s *requestContext) JSON(data interface{}) {
 	}
 }
 
+func (s *requestContext) Unmarshall(target interface{}) error {
+	return json.NewDecoder(s.r.Body).Decode(&target)
+}
+
 func (s *requestContext) Headers(m http.Header) Context {
 	s.headers = m
 	return s
