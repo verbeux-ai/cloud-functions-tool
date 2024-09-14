@@ -33,10 +33,16 @@ func (s *requestContext) Unmarshall(target interface{}) error {
 
 func (s *requestContext) Headers(m http.Header) Context {
 	s.headers = m
+	for k, v := range m {
+		for _, hV := range v {
+			s.w.Header().Add(k, hV)
+		}
+	}
 	return s
 }
 
 func (s *requestContext) Status(i uint) Context {
+	s.w.WriteHeader(http.StatusOK)
 	s.status = i
 	return s
 }
