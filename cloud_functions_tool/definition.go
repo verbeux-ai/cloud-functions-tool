@@ -10,4 +10,5 @@ type Context interface {
 	Headers(header http.Header) Context
 	Status(uint) Context
 	GetFormFile(string) (*multipart.FileHeader, error)
+	Unmarshall(target interface{}) error
 }
