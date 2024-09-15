@@ -7,6 +7,6 @@ import (
 type requestContext struct {
 	w       http.ResponseWriter
 	r       *http.Request
-	status  uint
+	status  int
 	headers http.Header
 }

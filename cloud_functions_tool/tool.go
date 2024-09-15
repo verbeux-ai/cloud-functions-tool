@@ -41,8 +41,10 @@ func (s *requestContext) Headers(m http.Header) Context {
 	return s
 }
 
-func (s *requestContext) Status(i uint) Context {
-	s.w.WriteHeader(http.StatusOK)
+func (s *requestContext) Status(i int) Context {
+	if i > 0 {
+		s.w.WriteHeader(i)
+	}
 	s.status = i
 	return s
 }

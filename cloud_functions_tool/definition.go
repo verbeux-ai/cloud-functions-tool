@@ -8,7 +8,7 @@ import (
 type Context interface {
 	JSON(data interface{})
 	Headers(header http.Header) Context
-	Status(uint) Context
+	Status(int) Context
 	GetFormFile(string) (*multipart.FileHeader, error)
 	Unmarshall(target interface{}) error
 }
