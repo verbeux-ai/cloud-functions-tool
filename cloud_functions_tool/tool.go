@@ -1,6 +1,7 @@
 package cloud_functions_tool
 
 import (
+	"context"
 	"encoding/json"
 	"mime/multipart"
 	"net/http"
@@ -12,7 +13,7 @@ func NewContext(w http.ResponseWriter, r *http.Request) Context {
 	return &requestContext{w, r, 0, make(http.Header)}
 }
 
-func (s *requestContext) JSON(data interface{}) {
+func (s *requestContext) JSON(data interface{}) Context {
 	s.w.Header().Set("Content-Type", "application/json")
 	if s.status == 0 {
 		s.w.WriteHeader(http.StatusOK)
@@ -25,6 +26,12 @@ func (s *requestContext) JSON(data interface{}) {
 			zap.L().Panic("failed to return response", zap.Error(err))
 		}
 	}
+
+	return s
+}
+
+func (s *requestContext) Context() context.Context {
+	return s.r.Context()
 }
 
 func (s *requestContext) Unmarshall(target interface{}) error {
